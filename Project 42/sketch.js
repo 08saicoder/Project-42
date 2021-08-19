@@ -1,66 +1,55 @@
-var bgImg;
-var spacecraft = [spacecraft1, spacecraft2, spacecraft3, spacecraft4];
+var iss, spacecraft;
+var bg, issimg, scimg;
 var hasDocked = false;
-var iss = null;
-
 
 function preload(){
-  bgImg = loadImage("../Docking-undocking/spacebg.jpg");
-  iss = loadImage("Docking-undoccking/iss.png");
-  spacecraft1 = loadImage("Docking-undocking/spacecraft1.png");
-  spacecraft2 = loadImage("Docking-undocking/spacecraft2.png");
-  spacecraft3 = loadImage("Docking-undocking/spacecraft3.png");
-  spacecraft4 = loadImage("Docking-undocking/spacecraft4.png");
+  bg= loadImage("spacebg.jpg");
+  issimg = loadImage("iss.png");
+  scimg = loadImage("spacecraft1.png");
+  scimg1 = loadImage("spacecraft2.png");
+  scimg2= loadImage("spacecraft3.png");
+  scimg3= loadImage("spacecraft4.png");
 }
-
-
 function setup() {
-  createCanvas(800,400);
-  iss = createSprite(400, 200, 50, 50);
-  iss.setAnimation("iss.png");
-
-  spacecraft = createSprite(400, 100, 25, 25);
-  spacecraft.setAnimation("spacecraft1.png");
-
-
-
-  if(!hasDocked){
-    spacecraft.x = Math.round(random(10,60));
-
-
-    if (keyDown("RIGHT_ARROW")) {
-      spacecraft.x = spacecraft.x + 2;
-      this.image.setAnimation("spacecraft4.png");
-    }
-    
-    if (keyDown("LEFT_ARROW")) {
-        spacecraft.x = spacecraft.x - 2;
-        this.image.setAnimation("spacecraft3.png");
-    }
-
-    if (keyDown("UP_ARROW")) {
-      spacecraft.y = spacecraft.y + 2;
-      this.image.setAnimation("spacecraft2.png");
-    }
-
-    if (keyDown("DOWN_ARROW")) {
-      spacecraft.y = spacecraft.y - 2;
-      this.image.setAnimation("spacecraft1.png");
-    }
-
-}
-
-if(spacecraft.isTouching(iss)){
-  stroke(1);
-  textSize(24);
-  textColor("White");
-  text("Docking Successful!", 400, 100);
+  createCanvas(600, 350);
+  spacecraft = createSprite(285,240);
+  spacecraft.addImage(scimg);
+  spacecraft.scale = 0.15;
   
-  }
-  
+  iss = createSprite(330,130);
+  iss.addImage(issimg);
+  iss.scale = 0.25;
 }
-
 function draw() {
-  background(bgImg);  
+  background(bg);
+  
+  spacecraft.addImage(scimg);
+  if(!hasDocked){
+    spacecraft.x = spacecraft.x + random(-1,1);
+    
+  if(keyDown("UP_ARROW")){
+    spacecraft.y = spacecraft.y -2;
+  }
+    
+  if(keyDown("LEFT_ARROW")){
+      spacecraft.addImage(scimg3);
+    spacecraft.x = spacecraft.x - 1;
+  }
+    
+  if(keyDown("RIGHT_ARROW")){
+      spacecraft.addImage(scimg2);
+    spacecraft.x = spacecraft.x + 1;
+  }
+    
+  if(keyDown("DOWN_ARROW")){
+      spacecraft.addImage(scimg1);
+  }
+}
+  if(spacecraft.y <= (iss.y+70) && spacecraft.x <= (iss.x-10)){
+    hasDocked = true;
+    textSize(25);
+    fill("white")
+    text("Docking Successful!", 200, 300);
+  }
   drawSprites();
 }
